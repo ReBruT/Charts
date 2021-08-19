@@ -38,6 +38,8 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
     private var _scaleXEnabled = true
     private var _scaleYEnabled = true
     
+    open var contentClipInsets = UIEdgeInsets()
+    
     /// the color for the background of the chart-drawing area (everything behind the grid lines).
     @objc open var gridBackgroundColor = NSUIColor(red: 240/255.0, green: 240/255.0, blue: 240/255.0, alpha: 1.0)
     
@@ -233,7 +235,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         context.saveGState()
         // make sure the data cannot be drawn outside the content-rect
         if clipDataToContentEnabled {
-            context.clip(to: _viewPortHandler.contentRect)
+            context.clip(to: _viewPortHandler.contentRect.inset(by: contentClipInsets))
         }
         renderer.drawData(context: context)
         

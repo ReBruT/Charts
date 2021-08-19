@@ -22,6 +22,8 @@ open class CombinedChartRenderer: DataRenderer
     /// if set to true, a grey area is drawn behind each bar that indicates the maximum value
     @objc open var drawBarShadowEnabled = false
     
+    public var isRoundedBar:Bool = false
+    
     internal var _renderers = [DataRenderer]()
     
     internal var _drawOrder: [CombinedChartView.DrawOrder] = [.bar, .bubble, .line, .candle, .scatter]
@@ -49,7 +51,9 @@ open class CombinedChartRenderer: DataRenderer
             case .bar:
                 if chart.barData !== nil
                 {
-                    _renderers.append(BarChartRenderer(dataProvider: chart, animator: animator, viewPortHandler: viewPortHandler))
+                    let barRenderer = BarChartRenderer(dataProvider: chart, animator: animator, viewPortHandler: viewPortHandler)
+                    barRenderer.isRoundedBar = isRoundedBar
+                    _renderers.append(barRenderer)
                 }
                 break
                 

@@ -13,7 +13,7 @@ import Foundation
 import CoreGraphics
 
 #if canImport(UIKit)
-    import UIKit
+import UIKit
 #endif
 
 #if canImport(Cocoa)
@@ -48,6 +48,8 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
     {
         var rects = [CGRect]()
     }
+    
+    public var isRoundedBar:Bool = false
     
     @objc open weak var dataProvider: BarChartDataProvider?
     
@@ -431,7 +433,12 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
             
-            context.fill(barRect)
+            if isRoundedBar {
+                context.addPath(CGPath(roundedRect: barRect, cornerWidth: barRect.width/2, cornerHeight: barRect.height/2, transform: nil))
+                context.fillPath()
+            } else {
+                context.fill(barRect)
+            }
             
             if drawBorder
             {
@@ -811,7 +818,12 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 
                 setHighlightDrawPos(highlight: high, barRect: barRect)
                 
-                context.fill(barRect)
+                if isRoundedBar {
+                    context.addPath(CGPath(roundedRect: barRect, cornerWidth: barRect.width/2, cornerHeight: barRect.height/2, transform: nil))
+                    context.fillPath()
+                } else {
+                    context.fill(barRect)
+                }
             }
         }
         
